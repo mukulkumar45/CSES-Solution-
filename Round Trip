@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+bool dfs(int node,vector<vector<int>>& adj,vector<int>& vis,vector<int>& parent,int parentNode) {
+    vis[node] = 1;
+
+    for(auto ne : adj[node]) {
+        if(!vis[ne]) {
+            parent[ne] = node;
+            if(dfs(ne,adj,vis,parent,node)){
+                return true;
+            }
+        }
+        else if(ne != parentNode) {
+            vector<int> cycle;
+            cycle.push_back(node);
+            while(parent[node] != ne) {
+                node = parent[node];
+                cycle.push_back(node);
+            }
+            cycle.push_back(ne);
+            cycle.push_back(cycle[0]);
+
+            cout << cycle.size() << endl;
+            for(int i : cycle) {
+                cout << i << " ";
+            }
+            cout << endl;
+            return true;
+        }
+    }
+    return false;
+}
+
+int main() {
+    int n,m;
+    cin >> n >> m;
+    vector<vector<int>> adj(n+1);
+    for(int i = 0;i<m;i++) {
+        int u,v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    vector<int> vis(n+1,0);
+    vector<int> parent(n+1,0);
+    dfs(1,adj,vis,parent,-1);
+}
