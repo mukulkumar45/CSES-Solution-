@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-
+bool flag = true;
 void bfs(int node,vector<int>& ans,vector<vector<int>>& adj,vector<int>& vis) {
     queue<pair<int,int>> q; //{node,flag}
     q.push({node,1});
@@ -25,6 +25,14 @@ void bfs(int node,vector<int>& ans,vector<vector<int>>& adj,vector<int>& vis) {
                 }
                 vis[ne] = 1;
             }
+            else{
+                if(ans[ne] == f) {
+                    cout << "IMPOSSIBLE" << endl;
+                    flag = false;
+                    return;
+
+                }
+            }
         }
     }
 }
@@ -46,14 +54,18 @@ int main() {
     for(int i = 1;i<=n;i++) {
         if(!vis[i]) {
             bfs(i,ans,adj,vis);
+            if(flag == false) break;
         }
     }
     
 
-    for(int i = 1;i<=n;i++) {
+    if(flag) {
+        for(int i = 1;i<=n;i++) {
         cout << ans[i] << " ";
+        }
+        cout << endl;
     }
-    cout << endl;
+    
 
     return 0;
 
