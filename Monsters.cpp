@@ -56,7 +56,14 @@ void newBfs(queue<pair<pair<Point,int>,string>>& q,vector<vector<int>>& dist,vec
 
             if(nrow >=0 and nrow < n and ncol >= 0 and ncol < m and arr[nrow][ncol] != '#' and dist[nrow][ncol] > dis + 1) {
 
-                if(nrow == 0 or nrow == n-1 or ncol == 0 or ncol == m-1) {
+                if((nrow == 0 or nrow == n-1 or ncol == 0 or ncol == m-1) and (path.size() >= 1)) {
+
+                    if(nrow == 0) {
+                        path += 'U';
+                    }
+                    else if(nrow == n-1) path += 'D';
+                    else if(ncol == 0) path += 'L';
+                    else if(ncol == m-1) path += 'R';
                     cout << "YES" << endl;
                     cout << path.size() << endl;
                     for(char ch : path) {
@@ -69,7 +76,7 @@ void newBfs(queue<pair<pair<Point,int>,string>>& q,vector<vector<int>>& dist,vec
                 if(d[nrow][ncol] > dis + 1) {
                     char ch = '#';
                     d[nrow][ncol] = dis + 1;
-                    if(i == 0) ch += 'L';
+                    if(i == 0) ch = 'L';
                     else if(i == 1) ch = 'R';
                     else if(i == 2) ch = 'U';
                     else if(i == 3) ch = 'D';
@@ -80,7 +87,7 @@ void newBfs(queue<pair<pair<Point,int>,string>>& q,vector<vector<int>>& dist,vec
         }
 
     }
-    cout << "IMPOSSIBLE" << endl;
+    cout << "NO" << endl;
 }
 
 int main() {
