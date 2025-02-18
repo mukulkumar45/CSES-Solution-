@@ -1,6 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+bool ans = false;
+
+
 bool dfs(int node,vector<vector<int>>& adj,vector<int>& vis,vector<int>& parent,int parentNode) {
     vis[node] = 1;
 
@@ -12,6 +15,7 @@ bool dfs(int node,vector<vector<int>>& adj,vector<int>& vis,vector<int>& parent,
             }
         }
         else if(ne != parentNode) {
+            ans = true;
             vector<int> cycle;
             cycle.push_back(node);
             while(parent[node] != ne) {
@@ -44,5 +48,14 @@ int main() {
     }
     vector<int> vis(n+1,0);
     vector<int> parent(n+1,0);
-    dfs(1,adj,vis,parent,-1);
+
+    for(int i = 1;i<=n;i++) {
+        if(!vis[i]){
+            dfs(i,adj,vis,parent,-1);
+        }
+    }
+    if(!ans) {
+        cout << "IMPOSSIBLE" << endl;
+    }
+    
 }
