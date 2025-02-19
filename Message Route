@@ -1,31 +1,41 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void bfs(int start,int end,vector<int>& dist,vector<vector<int>>& adj)  {
-    queue<pair<pair<int,int>,string>> q;  //{{node,dist},path}
-    q.push({{1,0},"1"});
+void bfs(int start,int end,vector<int>& dist,vector<vector<int>>& adj,int n) {
+    queue<pair<int,int>> q;
+    vector<int> parent(n+1);
+    q.push({1,0});
     dist[1] = 0;
-    
+    parent[1] = 1;
+
     while(!q.empty()) {
         auto fr = q.front();
         q.pop();
 
-        int node = fr.first.first;
-        int dis = fr.first.second;
-        string path = fr.second;
-        if(node == end) {
-            cout << dis + 1 << endl;
-            for(auto ch : path) {
-                cout << ch << " ";
+        int curr = fr.first;
+        int dis = fr.second;
+
+        if(curr == end) {
+            vector<int> path;
+            while(curr != 1) {
+                path.push_back(curr);
+                curr = parent[curr];
             }
-            cout << endl;
+            path.push_back(1);
+            reverse(path.begin(),path.end());
+            cout << path.size() << endl;
+            for(int i : path) {
+                cout << i << " ";
+            }
+            cout <<endl;
             return;
         }
 
-        for(auto ne : adj[node]) {
+        for(auto ne : adj[curr]) {
             if(dist[ne] > dis + 1) {
+                parent[ne] = curr;
                 dist[ne] = dis + 1;
-                q.push({{ne,dist[ne]},path + to_string(ne)});
+                q.push({ne,dis + 1});
             }
         }
     }
@@ -43,7 +53,7 @@ int main() {
         adj[v].push_back(u);
     }
     vector<int> dist(n+1,1e9);
-    bfs(1,n,dist,adj);
+    bfs(1,n,dist,adj,n);
 
 
 }
