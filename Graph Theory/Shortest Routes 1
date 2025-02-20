@@ -1,26 +1,27 @@
 #include <bits/stdc++.h>
+#define ll long long 
 using namespace std;
 
 int main() {
-    int n,m;
+    ll n,m;
     cin >> n >> m;
-    vector<vector<pair<int,int>>> adj(n+1);
+    vector<vector<pair<ll,ll>>> adj(n+1);
     for(int i = 0;i<m;i++) {
-        int a,b,w;
+        ll a,b,w;
         cin >> a >> b >> w;
         adj[a].push_back({b,w});
     }
 
-    vector<int> dist(n+1,1e8);
-    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+    vector<ll> dist(n+1,1e12);
+    priority_queue<pair<ll,ll>, vector<pair<ll,ll>>, greater<pair<ll,ll>>> pq;
     pq.push({1,0}); // {node,weight}
     dist[1] = 0;
 
     while(!pq.empty()) {
         auto fr = pq.top();
         pq.pop();
-        int curr = fr.first;
-        int w = fr.second;
+        ll curr = fr.first;
+        ll w = fr.second;
 
         for(auto edge : adj[curr]) {
             if(w + edge.second < dist[edge.first]) {
