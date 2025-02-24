@@ -1,0 +1,72 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class DisjointSet {
+public:
+    vector<int> size;
+    vector<int> parent;
+
+    DisjointSet(int n) {
+        size.resize(n+1,1);
+        parent.resize(n+1);
+        for(int i = 1;i<=n;i++) {
+            parent[i] = i;
+        }
+    }
+
+    int findPath(int node) {
+        if(parent[node] != node) {
+            parent[node] = findPath(parent[node]);
+        }
+        return parent[node];
+    }
+
+    bool unionBySize(int x, int y) {
+        int rootx = findPath(x);
+        int rooty = findPath(y);
+
+        if(rootx == rooty) return true;
+
+        else {
+            if(size[rootx] < size[rooty]) {
+                parent[rootx] = rooty;
+                size[rooty] += size[rootx];
+            }
+            else{
+                parent[rooty] = rootx;
+                size[rootx] += size[rooty];
+            }
+        }
+        return false;
+    }
+
+    bool isConnected(int x,int y) {
+        return findPath(x) == findPath(y);
+    }
+
+    int getSize(int node) {
+        return size[findPath(node)];
+    }
+};
+
+int main() {
+    int n,m;
+    cin >> n >> m;
+
+    DisjointSet ds(n);
+    int components = n;
+    int largest = 1;
+
+    for(int i = 0;i<m;i++) {
+        int a,b;
+        cin >> a >> b;
+
+        if(!ds.unionBySize(a,b)) {
+            largest = max(largest,ds.getSize(a));
+            components--;
+        }
+
+        cout << components << " " << largest << endl;
+    }
+
+}
